@@ -10,7 +10,6 @@ namespace UpgradesMenu
         public static void Initialize()
         {
             SceneManager.sceneLoaded += OnSceneLoaded;
-            Plugin.Log.LogInfo("[UpgradesMenu] UpgradesMenuInitializer subscribed to sceneLoaded.");
         }
 
         private static void OnSceneLoaded(Scene scene, LoadSceneMode mode)
@@ -33,20 +32,28 @@ namespace UpgradesMenu
                     return;
                 }
 
+                // Temporarily deactivate to prevent cloning side effects
+                bool originalActive = upgradeMenuTransform.gameObject.activeSelf;
+                upgradeMenuTransform.gameObject.SetActive(false);
+
+                // Clone safely
                 GameObject upgradesMenuClone = Object.Instantiate(upgradeMenuTransform.gameObject);
-                upgradesMenuClone.name = "UpgradesMenu";
+                upgradesMenuClone.name = "UpgradesMenuInGame";
                 upgradesMenuClone.SetActive(false);
 
-                CleanMenuBeforeSave(upgradesMenuClone);
+                // Reactivate original
+                upgradeMenuTransform.gameObject.SetActive(originalActive);
 
-                // Create and parent under a holder
+                // Move under holder for persistence
                 upgradesMenuHolder = new GameObject("UpgradesMenuHolder");
                 Object.DontDestroyOnLoad(upgradesMenuHolder);
                 upgradesMenuClone.transform.SetParent(upgradesMenuHolder.transform, false);
 
-                Plugin.upgradesMenuPrefab = upgradesMenuClone;
+                // Clean without affecting original
+                PrepareMenuPrefabForSaving(upgradesMenuClone);
 
-                Plugin.Log.LogInfo("[UpgradesMenu] UpgradesMenu cloned, cleaned, and stored persistently under holder.");
+                Plugin.upgradesMenuPrefab = upgradesMenuClone;
+                Plugin.Log.LogInfo("[UpgradesMenu] UpgradesMenu cloned, cleaned, and stored persistently.");
             }
 
             if (scene.name == "GameScene")
@@ -65,26 +72,29 @@ namespace UpgradesMenu
                 }
 
                 GameObject upgradesMenuInstance = Object.Instantiate(Plugin.upgradesMenuPrefab, gameUI.transform);
-                upgradesMenuInstance.name = "UpgradesMenu";
+                upgradesMenuInstance.name = "UpgradesMenuInGame"; // ✅ Use correct name
                 upgradesMenuInstance.SetActive(false);
 
-                // Attach global hotkey manager on first GameScene load
+                if (upgradesMenuInstance.GetComponent<UpgradesMenuInGame>() == null)
+                {
+                    upgradesMenuInstance.AddComponent<UpgradesMenuInGame>();
+                    Plugin.Log.LogInfo("[UpgradesMenu] Attached UpgradesMenu.cs to UpgradesMenuInGame instance.");
+                }
+
                 if (GameObject.Find("UpgradesMenuHotkeyManager") == null)
                 {
                     GameObject hotkeyManagerObj = new GameObject("UpgradesMenuHotkeyManager");
                     Object.DontDestroyOnLoad(hotkeyManagerObj);
                     var hotkeyManager = hotkeyManagerObj.AddComponent<UpgradesMenuHotkeyManager>();
                     hotkeyManager.Initialize(upgradesMenuInstance);
-                    Plugin.Log.LogInfo("[UpgradesMenu] Hotkey manager created and linked to UpgradesMenu.");
+                    Plugin.Log.LogInfo("[UpgradesMenu] Hotkey manager created and linked to UpgradesMenuInGame.");
                 }
 
                 CleanMenuForRun(upgradesMenuInstance);
-
-                Plugin.Log.LogInfo("[UpgradesMenu] UpgradesMenu injected under GameUI in GameScene and prepared for the run.");
             }
         }
 
-        private static void CleanMenuBeforeSave(GameObject upgradesMenu)
+        private static void PrepareMenuPrefabForSaving(GameObject upgradesMenu)
         {
             Transform slidingScreen = upgradesMenu.transform.Find("SlidingScreen");
             if (slidingScreen == null)
@@ -93,26 +103,7 @@ namespace UpgradesMenu
                 return;
             }
 
-            // Cache Ballista card's own Image sprite and color
-            Transform ballistaTransform = slidingScreen.Find("Ballista/Ballista");
-            if (ballistaTransform == null)
-            {
-                Plugin.Log.LogError("[UpgradesMenu] Ballista reference card not found.");
-                return;
-            }
-
-            var referenceImage = ballistaTransform.GetComponent<UnityEngine.UI.Image>();
-            if (referenceImage == null)
-            {
-                Plugin.Log.LogError("[UpgradesMenu] Ballista does not have an Image component.");
-                return;
-            }
-
-            var referenceSprite = referenceImage.sprite;
-            var referenceColor = referenceImage.color;
-            Plugin.Log.LogInfo($"[UpgradesMenu] Cached Ballista sprite ({referenceSprite?.name ?? "null"}) and color {referenceColor}.");
-
-            // Remove unnecessary panels
+            // Remove unnecessary UI
             Transform scaler = upgradesMenu.transform.Find("Scaler");
             if (scaler != null) Object.Destroy(scaler.gameObject);
 
@@ -122,55 +113,105 @@ namespace UpgradesMenu
             Transform examples = slidingScreen.Find("Examples");
             if (examples != null) Object.Destroy(examples.gameObject);
 
-            // Clean all cards
+            Transform goldPermanent = slidingScreen.Find("GoldPermanant");
+            if (goldPermanent != null) Object.Destroy(goldPermanent.gameObject);
+
+            Transform manaPermanent = slidingScreen.Find("ManaPermanant");
+            if (manaPermanent != null) Object.Destroy(manaPermanent.gameObject);
+
+            Transform healthPermanent = slidingScreen.Find("HealthPermanant");
+            if (healthPermanent != null) Object.Destroy(healthPermanent.gameObject);
+
+            Transform cardPermanent = slidingScreen.Find("CardPermanant");
+            if (cardPermanent != null) Object.Destroy(cardPermanent.gameObject);
+
             foreach (Transform category in slidingScreen)
             {
-                string categoryName = category.name;
-                if (categoryName == "GoldPermanant" || categoryName == "ManaPermanant" ||
-                    categoryName == "HealthPermanant" || categoryName == "CardPermanant")
-                {
-                    Plugin.Log.LogInfo($"[UpgradesMenu] Skipping category: {categoryName}");
-                    continue;
-                }
-
                 foreach (Transform card in category)
                 {
-                    CleanCard(card, referenceSprite, referenceColor);
+                    CleanCard(card);
                 }
             }
 
-            Plugin.Log.LogInfo("[UpgradesMenu] CleanMenuBeforeSave completed: all cards cleaned and made informational.");
+            Plugin.Log.LogInfo("[UpgradesMenu] CleanMenuBeforeSave completed without affecting the original.");
         }
 
-        private static void CleanCard(Transform card, Sprite referenceSprite, Color referenceColor)
+        private static void CleanCard(Transform card)
         {
-            // Remove interactivity
             var button = card.GetComponent<UnityEngine.UI.Button>();
-            if (button != null) Object.Destroy(button);
+            if (button != null)
+            {
+                button.interactable = false;
+            }
 
             var upgradeButton = card.GetComponent<UpgradeButton>();
-            if (upgradeButton != null) Object.Destroy(upgradeButton);
+            if (upgradeButton != null)
+            {
+                upgradeButton.enabled = false;
+            }
 
             var eventTrigger = card.GetComponent<UnityEngine.EventSystems.EventTrigger>();
-            if (eventTrigger != null) Object.Destroy(eventTrigger);
-
-            // Apply Ballista's sprite and color to card's own Image component
-            var image = card.GetComponent<UnityEngine.UI.Image>();
-            if (image != null)
+            if (eventTrigger != null)
             {
-                image.sprite = referenceSprite;
-                image.color = referenceColor;
-                Plugin.Log.LogInfo($"[UpgradesMenu] Cleaned card '{card.name}' with Ballista sprite and color.");
+                eventTrigger.enabled = false;
+            }
+
+            var image = card.GetComponent<UnityEngine.UI.Image>();
+            if (image != null && image.sprite != null)
+            {
+                string spriteName = image.sprite.name;
+                Sprite replacementSprite = null;
+
+                if (spriteName == Plugin.UnlockVariant1SpriteName)
+                {
+                    replacementSprite = FindSpriteByName(Plugin.LockVariant1SpriteName);
+                    Plugin.Log.LogInfo($"[UpgradesMenu] Swapping {Plugin.UnlockVariant1SpriteName} -> {Plugin.LockVariant1SpriteName} on '{card.name}'.");
+                }
+                else if (spriteName == Plugin.LockVariant1SpriteName)
+                {
+                    replacementSprite = FindSpriteByName(Plugin.UnlockVariant1SpriteName);
+                    Plugin.Log.LogInfo($"[UpgradesMenu] Swapping {Plugin.LockVariant1SpriteName} -> {Plugin.UnlockVariant1SpriteName} on '{card.name}'.");
+                }
+                else if (spriteName == Plugin.UnlockVariant2SpriteName)
+                {
+                    replacementSprite = FindSpriteByName(Plugin.LockVariant2SpriteName);
+                    Plugin.Log.LogInfo($"[UpgradesMenu] Swapping {Plugin.UnlockVariant2SpriteName} -> {Plugin.LockVariant2SpriteName} on '{card.name}'.");
+                }
+                else if (spriteName == Plugin.LockVariant2SpriteName)
+                {
+                    replacementSprite = FindSpriteByName(Plugin.UnlockVariant2SpriteName);
+                    Plugin.Log.LogInfo($"[UpgradesMenu] Swapping {Plugin.LockVariant2SpriteName} -> {Plugin.UnlockVariant2SpriteName} on '{card.name}'.");
+                }
+
+                if (replacementSprite != null)
+                {
+                    image.sprite = replacementSprite;
+                }
+
+                // Apply unlock highlight color consistently
+                image.color = Plugin.ReferenceColor;
             }
             else
             {
-                Plugin.Log.LogWarning($"[UpgradesMenu] Card '{card.name}' missing Image component; skipping sprite/color application.");
+                Plugin.Log.LogWarning($"[UpgradesMenu] Card '{card.name}' missing Image component or sprite; skipping.");
             }
+        }
+
+
+        private static Sprite FindSpriteByName(string spriteName)
+        {
+            foreach (var sprite in Resources.FindObjectsOfTypeAll<Sprite>())
+            {
+                if (sprite.name == spriteName)
+                {
+                    return sprite;
+                }
+            }
+            return null;
         }
 
         private static void CleanMenuForRun(GameObject upgradesMenu)
         {
-            // Optionally filter cards here based on the current run pool
             Plugin.Log.LogInfo("[UpgradesMenu] CleanMenuForRun executed.");
         }
     }

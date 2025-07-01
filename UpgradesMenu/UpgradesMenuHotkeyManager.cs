@@ -9,7 +9,6 @@ namespace UpgradesMenu
         public void Initialize(GameObject upgradesMenu)
         {
             upgradesMenuInstance = upgradesMenu;
-            Plugin.Log.LogInfo("[UpgradesMenu] Hotkey manager initialized with UpgradesMenu reference.");
         }
 
         void Update()
@@ -20,7 +19,7 @@ namespace UpgradesMenu
                 {
                     bool newState = !upgradesMenuInstance.activeSelf;
                     upgradesMenuInstance.SetActive(newState);
-                    Plugin.Log.LogInfo($"[UpgradesMenu] UpgradesMenu toggled to {(newState ? "Visible" : "Hidden")} with U key.");
+                    Plugin.Log.LogInfo($"[UpgradesMenu] Toggled UpgradesMenu to {(newState ? "Active" : "Inactive")}.");
                 }
                 else
                 {
