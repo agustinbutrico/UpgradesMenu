@@ -7,24 +7,24 @@ namespace UpgradesMenu
 {
     internal static class TowerUnlockRegistry
     {
-        static readonly Dictionary<string, string> TowerUnlockMapping = new Dictionary<string, string>
-    {
-        { "Ballista", "Ballista" },
-        { "Mortar", "Mortar" },
-        { "TeslaCoil", "Tesla" },
-        { "FrostKeep", "FrostKeep" },
-        { "FlameThrower", "FlameThrower" },
-        { "PoisonSprayer", "PoisonSprayer" },
-        { "Radar", "Radar" },
-        { "Obelisk", "Obelisk" },
-        { "ParticleCannon", "Particle Cannon" },
-        { "Shredder", "Shredder" },
-        { "Encampment", "Encampment" },
-        { "Lookout", "Lookout" },
-        { "VampireLair", "VampireLair" },
-        { "Cannon", "Cannon" },
-        { "Monument", "Monument" }
-    };
+        public static readonly Dictionary<string, string> TowerUnlockMapping = new Dictionary<string, string>
+        {
+            { "Ballista", "Ballista" },
+            { "Mortar", "Mortar" },
+            { "TeslaCoil", "Tesla" },
+            { "FrostKeep", "FrostKeep" },
+            { "FlameThrower", "FlameThrower" },
+            { "PoisonSprayer", "PoisonSprayer" },
+            { "Radar", "Radar" },
+            { "Obelisk", "Obelisk" },
+            { "ParticleCannon", "Particle Cannon" },
+            { "Shredder", "Shredder" },
+            { "Encampment", "Encampment" },
+            { "Lookout", "Lookout" },
+            { "VampireLair", "VampireLair" },
+            { "Cannon", "Cannon" },
+            { "Monument", "Monument" }
+        };
 
         public static bool IsTowerPurchased(string towerName)
         {
