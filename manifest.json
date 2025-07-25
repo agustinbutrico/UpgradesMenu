@@ -1,0 +1,14 @@
+{
+    "name": "UpgradesMenu",
+    "version_number": "1.0.0",
+    "website_url": "https://github.com/agustinbutrico/UpgradesMenu",
+    "description": "Tool for easy card display.",
+    "dependencies": [
+        "bbepis-BepInEx_Rogue_Tower-5.4.1900",
+        "AgusBut-TexturesLib.Shared-1.0.0",
+        "AgusBut-TexturesLib.Cards-1.0.0",
+        "AgusBut-TexturesLib.UI-1.0.0",
+        "AgusBut-CardDataLib-1.0.0",
+        "AgusBut-CardRenderer-1.0.0"
+    ]
+}
