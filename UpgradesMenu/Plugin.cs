@@ -1,39 +1,54 @@
 ﻿using BepInEx;
 using HarmonyLib;
-using UnityEngine;
+using UpgradesMenu.Integrations;
+using UpgradesMenu.Menu.Logic;
+using UpgradesMenu.StateManagement.Runtime;
+using UpgradesMenu.StateManagement;
+using UpgradesMenu.Utility;
 
 namespace UpgradesMenu
 {
     [BepInPlugin("AgusBut.UpgradesMenu", "UpgradesMenu", "1.0.0")]
+    [BepInDependency("AgusBut.TexturesLib.Cards")]
+    [BepInDependency("AgusBut.TexturesLib.Shared")]
+    [BepInDependency("AgusBut.TexturesLib.UI")]
+    [BepInDependency("AgusBut.CardDataLib")]
+    [BepInDependency("AgusBut.CardRenderer")]
     public class Plugin : BaseUnityPlugin
     {
         public static Plugin Instance { get; private set; }
         public static BepInEx.Logging.ManualLogSource Log { get; private set; }
-
-        public static GameObject upgradesMenuPrefab;
-
-        // 🪐 Hardcoded references for card unlock detection
-        public static string UnlockVariant1SpriteName = "UI9SliceOrange";         // Unlocked variant 1
-        public static string UnlockVariant2SpriteName = "UI9SliceBlueFilled";     // Unlocked variant 2
-        public static string LockVariant1SpriteName = "UI9SliceOrangeFilled";     // Locked variant 1
-        public static string LockVariant2SpriteName = "UI9SliceBlue";             // Locked variant 2
-
-        public static Color ReferenceColor = new Color(1f, 1f, 1f, 1f);
 
         private void Awake()
         {
             Instance = this;
             Log = base.Logger;
 
-            UpgradesMenuInitializer.Initialize();
-
-            GameObject go = new GameObject("CardUnlockDebugger");
-            DontDestroyOnLoad(go);
-
-            Logger.LogInfo("CardUnlockDebugger GameObject created and added to scene.");
+            ConfigManager.Initialize(this);
+            SceneHooks.Register();
+            CardSyncHandler.Register();
 
             var harmony = new Harmony("AgusBut.UpgradesMenu");
             harmony.PatchAll();
+
+            BanishCard_Patch.ApplyIfAvailable(harmony);
+
+            Logger.LogInfo("UpgradesMenu loaded successfully.");
+        }
+
+        private void Update()
+        {
+            MenuHelper.HandleMenuInput(ConfigManager.ToggleKey.Value);
+        }
+
+        private void OnDestroy()
+        {
+            CardSyncHandler.Unregister();
+        }
+
+        internal static bool UseRedMonsterColors()
+        {
+            return RedMonsterCardsInterop.IsModPresent() && !ConfigManager.OverrideRedMonsterCards.Value;
         }
     }
 }
