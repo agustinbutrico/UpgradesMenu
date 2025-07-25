@@ -32,18 +32,18 @@ UpgradesMenu is a mod for Rogue Tower that provides an in-game menu to view your
 
 ## Preview
 
-![UpgradesMenu Mod Preview](https://raw.githubusercontent.com/agustinbutrico/UpgradesMenu/main/Media/Preview.gif)
+![UpgradesMenu Mod Preview](https://raw.githubusercontent.com/agustinbutrico/UpgradesMenu/master/Media/Preview.gif)
 
 ## Color customization
 
-![UpgradesMenu Mod Preview](https://raw.githubusercontent.com/agustinbutrico/UpgradesMenu/main/Media/ColorPreview.gif)
+![UpgradesMenu Mod Preview](https://raw.githubusercontent.com/agustinbutrico/UpgradesMenu/master/Media/ColorPreview.gif)
 
 ## Banish Cards Integration
 
-![UpgradesMenu Mod Preview](https://raw.githubusercontent.com/agustinbutrico/UpgradesMenu/main/Media/BanishCards.gif)
+![UpgradesMenu Mod Preview](https://raw.githubusercontent.com/agustinbutrico/UpgradesMenu/master/Media/BanishCards.gif)
 
 ## Red Monster Cards Integration
 
-![UpgradesMenu Mod Preview](https://raw.githubusercontent.com/agustinbutrico/UpgradesMenu/main/Media/RedMonsterCards.png)
+![UpgradesMenu Mod Preview](https://raw.githubusercontent.com/agustinbutrico/UpgradesMenu/master/Media/RedMonsterCards.png)
 
 
