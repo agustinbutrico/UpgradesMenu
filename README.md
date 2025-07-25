@@ -30,3 +30,20 @@ UpgradesMenu is a mod for Rogue Tower that provides an in-game menu to view your
 
         Configurable toggle key to open/close the menu.
 
+## Preview
+
+![UpgradesMenu Mod Preview](https://raw.githubusercontent.com/agustinbutrico/UpgradesMenu/main/Media/Preview.gif)
+
+## Color customization
+
+![UpgradesMenu Mod Preview](https://raw.githubusercontent.com/agustinbutrico/UpgradesMenu/main/Media/ColorPreview.gif)
+
+## Banish Cards Integration
+
+![UpgradesMenu Mod Preview](https://raw.githubusercontent.com/agustinbutrico/UpgradesMenu/main/Media/BanishCards.gif)
+
+## Red Monster Cards Integration
+
+![UpgradesMenu Mod Preview](https://raw.githubusercontent.com/agustinbutrico/UpgradesMenu/main/Media/RedMonsterCards.png)
+
+
