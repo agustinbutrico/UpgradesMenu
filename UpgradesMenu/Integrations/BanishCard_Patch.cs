@@ -12,7 +12,7 @@ namespace UpgradesMenu.Integrations
     {
         public static void ApplyIfAvailable(Harmony harmony)
         {
-            var banishCardsType = AccessTools.TypeByName("BanishCards.CardBanishManager");
+            var banishCardsType = AccessTools.TypeByName("BanishCards.Runtime.CardBanishManager");
             if (banishCardsType == null) return; // Mod not present
 
             var methodToPatch = AccessTools.Method(banishCardsType, "BanishCard");

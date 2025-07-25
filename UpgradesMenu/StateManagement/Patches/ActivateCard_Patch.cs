@@ -2,7 +2,6 @@
 using CardRenderer;
 using HarmonyLib;
 using System.Collections.Generic;
-using UpgradesMenu.Menu.Style;
 using UpgradesMenu.StateManagement.Runtime;
 using static UpgradesMenu.Menu.Style.StyleManager;
 

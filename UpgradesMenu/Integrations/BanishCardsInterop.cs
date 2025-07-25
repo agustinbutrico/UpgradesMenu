@@ -9,7 +9,7 @@ namespace UpgradesMenu.Integrations
         public static List<string> GetBanishedUnlockNames()
         {
             // Get the type from the loaded assemblies
-            Type banishedCardsType = Type.GetType("BanishCards.BanishedCards, BanishCards");
+            Type banishedCardsType = Type.GetType("BanishCards.Runtime.BanishedCards, BanishCards");
             if (banishedCardsType == null)
             {
                 // BanishCards mod not installed

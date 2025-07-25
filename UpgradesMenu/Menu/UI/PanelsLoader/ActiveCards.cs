@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using UnityEngine;
 using UpgradesMenu.Menu.Logic;
-using UpgradesMenu.Menu.Style;
 using UpgradesMenu.Menu.UI.CardTreeLoader;
 using static UpgradesMenu.Menu.Style.StyleManager;
 
