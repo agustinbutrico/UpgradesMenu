@@ -1,7 +1,7 @@
-﻿using TexturesLib.Shared;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 using UpgradesMenu.Menu.Logic;
+using UpgradesMenu.Utility;
 
 namespace UpgradesMenu.Menu.UI.Buttons
 {
@@ -55,7 +55,7 @@ namespace UpgradesMenu.Menu.UI.Buttons
             }
             else
             {
-                image.color = ColorsHelper.DeepBrown;
+                image.color = ColorsHelper.DeepOrange;
             }
 
             // Size and position
@@ -87,7 +87,7 @@ namespace UpgradesMenu.Menu.UI.Buttons
             {
                 iconImage.sprite = iconSprite;
                 iconImage.preserveAspect = true;
-                iconImage.color = ColorsHelper.DeepBrown;
+                iconImage.color = ColorsHelper.DeepOrange;
             }
 
             // Icon size and position (centered)

@@ -16,7 +16,7 @@ namespace UpgradesMenu.Menu.Style.Panel
                 case StyleType.Monster:
                     return $"LargeUI9Slice{ConfigManager.MonsterPanelColor.Value}";
                 default:
-                    return "LargeUI9SliceBrown";
+                    return "LargeUI9SliceOrange";
             };
         }
     }

@@ -9,9 +9,6 @@ using UpgradesMenu.Utility;
 namespace UpgradesMenu
 {
     [BepInPlugin("AgusBut.UpgradesMenu", "UpgradesMenu", "1.0.0")]
-    [BepInDependency("AgusBut.TexturesLib.Cards")]
-    [BepInDependency("AgusBut.TexturesLib.Shared")]
-    [BepInDependency("AgusBut.TexturesLib.UI")]
     [BepInDependency("AgusBut.CardDataLib")]
     [BepInDependency("AgusBut.CardRenderer")]
     public class Plugin : BaseUnityPlugin

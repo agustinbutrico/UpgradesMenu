@@ -24,10 +24,10 @@ namespace UpgradesMenu.Utility
 
         internal static void Initialize(BaseUnityPlugin plugin)
         {
-            string availableColors = "Can be: White, Grey, Black, Blue, Brown, Red, Green, Purple, DeepBlue, DeepBrown, DeepRed, DeepGreen, DeepPurple";
+            string availableColors = "Can be: White, Grey, Black, Blue, Orange, Red, Green, Purple, DeepBlue, DeepBrown, DeepRed, DeepGreen, DeepPurple";
 
-            ActivePanelColor = plugin.Config.Bind("Appearance", "ActivePanelColor", "Brown", availableColors);
-            ActiveCardColor = plugin.Config.Bind("Appearance", "ActiveCardColor", "Brown", availableColors);
+            ActivePanelColor = plugin.Config.Bind("Appearance", "ActivePanelColor", "Orange", availableColors);
+            ActiveCardColor = plugin.Config.Bind("Appearance", "ActiveCardColor", "Orange", availableColors);
 
             PassivePanelColor = plugin.Config.Bind("Appearance", "PassivePanelColor", "Blue", availableColors);
             PassiveCardColor = plugin.Config.Bind("Appearance", "PassiveCardColor", "Blue", availableColors);
@@ -37,7 +37,7 @@ namespace UpgradesMenu.Utility
 
             OverrideRedMonsterCards = plugin.Config.Bind("Compatibility", "OverrideRedMonsterCards", false, "Override monster card colors if RedMonsterCards mod is installed.");
 
-            BanishCardColor = plugin.Config.Bind("Compatibility", "BanishCardColor", "Grey", availableColors);
+            BanishCardColor = plugin.Config.Bind("Compatibility", "BanishCardColor", "White", availableColors);
 
             ToggleKey = plugin.Config.Bind("Input", "ToggleKey", KeyCode.Tab, "Toggles the UpgradesMenu");
 

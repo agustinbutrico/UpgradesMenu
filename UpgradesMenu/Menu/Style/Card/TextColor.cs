@@ -1,5 +1,4 @@
-﻿using TexturesLib.Shared;
-using UnityEngine;
+﻿using UnityEngine;
 using UpgradesMenu.Utility;
 using static UpgradesMenu.Menu.Style.StyleManager;
 
@@ -26,7 +25,7 @@ namespace UpgradesMenu.Menu.Style.Card
                     colorKey = ConfigManager.BanishCardColor.Value;
                     break;
                 default:
-                    colorKey = "brown";
+                    colorKey = "orange";
                     break;
             }
 

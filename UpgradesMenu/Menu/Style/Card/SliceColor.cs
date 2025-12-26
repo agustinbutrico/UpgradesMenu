@@ -18,7 +18,7 @@ namespace UpgradesMenu.Menu.Style.Card
                 case StyleType.Banish:
                     return $"UI9Slice{ConfigManager.BanishCardColor.Value}Filled";
                 default:
-                    return "UI9SliceBrownFilled";
+                    return "UI9SliceOrangeFilled";
             };
         }
 
@@ -35,7 +35,7 @@ namespace UpgradesMenu.Menu.Style.Card
                 case StyleType.Banish:
                     return $"UI9Slice{ConfigManager.BanishCardColor.Value}";
                 default:
-                    return "UI9SliceBrown";
+                    return "UI9SliceOrange";
             };
         }
     }

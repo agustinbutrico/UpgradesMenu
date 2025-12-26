@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using UnityEngine;
 using UpgradesMenu.Menu.Logic;
-using UpgradesMenu.Menu.Style;
 using UpgradesMenu.Menu.UI.CardTreeLoader;
 using static UpgradesMenu.Menu.Style.StyleManager;
 
@@ -14,7 +13,7 @@ namespace UpgradesMenu.Menu.UI.PanelsLoader
             string prefAspectName = "DefaultHorizontalCard";
             var cardStyle = GetCardStyle(StyleType.Passive);
             var panelStyle = GetPanelStyle(StyleType.Passive);
-            
+
             // Passive Panel
             var passiveCardsGO = Panels.CreatePanel("PassiveCards", slidingScreenGO.transform);
 
